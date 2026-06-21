@@ -27,6 +27,7 @@ struct MoreView: View {
 
                 Section {
                     NavigationLink("Über die App") { AboutView() }
+                    NavigationLink("Datenschutz") { PrivacyPolicyView() }
                     NavigationLink("Lizenzen / Open Source") { LicensesView() }
                 }
 

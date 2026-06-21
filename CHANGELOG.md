@@ -13,6 +13,8 @@ Commits](https://www.conventionalcommits.org) since the last tag. Keep the
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-06-21
+
 ### Added
 - Fast, reliable barcode scanning with the camera (EAN, UPC, Code 128/39/93,
   ITF, QR, PDF417); near-range autofocus keeps small barcodes sharp.

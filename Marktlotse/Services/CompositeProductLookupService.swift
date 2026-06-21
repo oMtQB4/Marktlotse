@@ -16,6 +16,10 @@ final class CompositeProductLookupService: ProductLookupService {
         self.services = services
     }
 
+    func warmUp() {
+        services.forEach { $0.warmUp() }
+    }
+
     func lookup(barcode: String) async throws -> Article {
         guard Barcode.isLookupCandidate(barcode) else {
             throw ProductLookupError.invalidBarcode

@@ -28,6 +28,10 @@ final class AppServices {
         //   let openGTIN = OpenGTINService(queryIDProvider: { settings.openGTINQueryID })
         let openFoodFacts = OpenFoodFactsService()
         self.lookupService = CompositeProductLookupService(services: [openFoodFacts])
+
+        // Open the connection to the product API at launch so the first scan
+        // isn't delayed by DNS/TLS setup. Silent, best-effort, no UI.
+        self.lookupService.warmUp()
     }
 
     @MainActor

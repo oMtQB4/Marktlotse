@@ -13,9 +13,24 @@ final class OpenFoodFactsService: ProductLookupService {
 
     private let session: URLSession
     private let host = "https://world.openfoodfacts.org"
+    // Open Food Facts asks for a descriptive User-Agent.
+    private let userAgent = "Marktlotse/1.0 (iOS; de.apps-roters.marktlotse)"
 
     init(session: URLSession = .shared) {
         self.session = session
+    }
+
+    /// Opens the TLS connection to the API ahead of the first lookup so that
+    /// DNS + TCP + TLS setup isn't paid for on the first scan (that handshake is
+    /// the bulk of the "slow first request", especially on cellular). The pooled
+    /// connection is then reused by the real lookup. Silent and best-effort.
+    func warmUp() {
+        guard let url = URL(string: host) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "HEAD"
+        request.timeoutInterval = 5
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        Task { _ = try? await session.data(for: request) }
     }
 
     func lookup(barcode: String) async throws -> Article {
@@ -37,9 +52,7 @@ final class OpenFoodFactsService: ProductLookupService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.timeoutInterval = 10
-        // Open Food Facts asks for a descriptive User-Agent.
-        request.setValue("Marktlotse/1.0 (iOS; de.apps-roters.marktlotse)",
-                         forHTTPHeaderField: "User-Agent")
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
         let data: Data
         let response: URLResponse

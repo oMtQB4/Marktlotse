@@ -11,6 +11,12 @@ import Foundation
 /// Abstraction so the lookup backend can be swapped or mocked.
 protocol ProductLookupService {
     func lookup(barcode: String) async throws -> Article
+    /// Optionally open the network connection ahead of the first lookup.
+    func warmUp()
+}
+
+extension ProductLookupService {
+    func warmUp() {}
 }
 
 enum ProductLookupError: LocalizedError {
