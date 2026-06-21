@@ -42,6 +42,20 @@ enum Barcode {
         isGTIN(code) || isISBN(code) || (isNumeric(code) && code.count >= 6)
     }
 
+    /// Validates the GTIN check digit (EAN-13/EAN-8, UPC-A, GTIN-14). Real retail
+    /// codes always satisfy this, so a failing check digit signals a misread.
+    /// Returns false for anything that isn't a GTIN-length numeric code.
+    static func hasValidCheckDigit(_ code: String) -> Bool {
+        guard isGTIN(code) else { return false }
+        let digits = code.compactMap { $0.wholeNumberValue }
+        guard digits.count == code.count, let check = digits.last else { return false }
+        // Weight the data digits 3,1,3,1,… from the right.
+        let sum = digits.dropLast().reversed().enumerated().reduce(0) { acc, pair in
+            acc + pair.element * (pair.offset.isMultiple(of: 2) ? 3 : 1)
+        }
+        return (10 - (sum % 10)) % 10 == check
+    }
+
     /// Normalises an EAN/GTIN for the OpenGTINDB query (13 digits, left padded).
     static func normalizedEAN(_ code: String) -> String {
         guard isNumeric(code) else { return code }

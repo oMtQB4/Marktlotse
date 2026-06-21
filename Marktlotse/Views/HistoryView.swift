@@ -12,6 +12,8 @@ struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \HistoryEntry.scannedAt, order: .reverse) private var entries: [HistoryEntry]
 
+    @State private var showClearConfirmation = false
+
     var body: some View {
         NavigationStack {
             Group {
@@ -53,8 +55,26 @@ struct HistoryView: View {
             }
             .toolbar {
                 if !entries.isEmpty {
-                    EditButton()
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(role: .destructive) {
+                            showClearConfirmation = true
+                        } label: {
+                            Label("Verlauf löschen", systemImage: "trash")
+                        }
+                        .accessibilityHint("Entfernt alle Produkte aus dem Verlauf")
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        EditButton()
+                    }
                 }
+            }
+            .confirmationDialog("Verlauf löschen?",
+                                isPresented: $showClearConfirmation,
+                                titleVisibility: .visible) {
+                Button("Verlauf löschen", role: .destructive) { clearAll() }
+                Button("Abbrechen", role: .cancel) { }
+            } message: {
+                Text("Alle gescannten Produkte werden aus dem Verlauf entfernt.")
             }
         }
     }
@@ -63,6 +83,11 @@ struct HistoryView: View {
         for index in offsets {
             modelContext.delete(entries[index])
         }
+        try? modelContext.save()
+    }
+
+    private func clearAll() {
+        try? modelContext.delete(model: HistoryEntry.self)
         try? modelContext.save()
     }
 }

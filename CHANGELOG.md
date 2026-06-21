@@ -21,7 +21,7 @@ Commits](https://www.conventionalcommits.org) since the last tag. Keep the
   sighted users.
 - Shopping lists: create lists, add and check off items, adjust quantities, and
   see the quantity for each item next to the stepper.
-- Scan history of previously looked-up products.
+- Scan history of previously looked-up products, which can be cleared entirely.
 - Custom ("own") article entries that supplement online lookups.
 - Voice memos attached to products.
 - Branded launch/splash screen shown while the app starts.
