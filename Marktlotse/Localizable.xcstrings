@@ -1,0 +1,306 @@
+{
+  "sourceLanguage" : "de",
+  "strings" : {
+    "%lld" : {
+
+    },
+    "%lld offen" : {
+
+    },
+    "%lld Stück" : {
+
+    },
+    "%lld von %lld offen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld von %2$lld offen"
+          }
+        }
+      }
+    },
+    "%lld×" : {
+
+    },
+    "Abbrechen" : {
+
+    },
+    "Abspielen" : {
+
+    },
+    "Allergene" : {
+
+    },
+    "Artikel hinzufügen" : {
+
+    },
+    "Artikelname" : {
+
+    },
+    "Aufnahme beenden" : {
+
+    },
+    "Aufnehmen" : {
+
+    },
+    "Barcode" : {
+
+    },
+    "Barcode eingeben" : {
+
+    },
+    "Barcode in den Sucher halten" : {
+
+    },
+    "Barcode manuell eingeben" : {
+
+    },
+    "Beendet die laufende Aufnahme" : {
+
+    },
+    "Beschreibung" : {
+
+    },
+    "Bewertung" : {
+
+    },
+    "Bezeichnung" : {
+
+    },
+    "Daten von Open Food Facts stehen unter der Open Database License (ODbL)." : {
+
+    },
+    "Datenquelle" : {
+
+    },
+    "Diese App unterstützt blinde und sehbehinderte Menschen beim selbstständigen Einkaufen. Sie erkennt Produkt-Barcodes mit der Kamera und liest die Produktinformationen vor." : {
+
+    },
+    "Diese Liste ist leer." : {
+
+    },
+    "Doppeltippen, um den Status zu ändern" : {
+
+    },
+    "Eigenen Eintrag anlegen" : {
+
+    },
+    "Eigenen Eintrag bearbeiten" : {
+
+    },
+    "Eigenen Eintrag löschen" : {
+
+    },
+    "Eigener Eintrag" : {
+
+    },
+    "Einführung erneut ansehen" : {
+
+    },
+    "Einkaufslisten" : {
+
+    },
+    "Ergebnisse vorlesen" : {
+
+    },
+    "Erledigt" : {
+
+    },
+    "Erstelle eine Liste oder füge beim Scannen Produkte hinzu." : {
+
+    },
+    "Erstellen" : {
+
+    },
+    "Fügt %@ zu %@ hinzu" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Fügt %1$@ zu %2$@ hinzu"
+          }
+        }
+      }
+    },
+    "Gescannte Produkte erscheinen hier." : {
+
+    },
+    "Gib die Ziffern unter dem Barcode ein." : {
+
+    },
+    "Gruppe %lld von 4, %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Gruppe %1$lld von 4, %2$@"
+          }
+        }
+      }
+    },
+    "Haptisches Feedback" : {
+
+    },
+    "Hersteller" : {
+
+    },
+    "Marktlotse" : {
+
+    },
+    "Hinzufügen" : {
+
+    },
+    "Kamerasucher" : {
+
+    },
+    "Kategorie" : {
+
+    },
+    "Kein Treffer" : {
+
+    },
+    "Kein Verlauf" : {
+
+    },
+    "Keine Einkaufslisten" : {
+
+    },
+    "Kennzeichnungen" : {
+
+    },
+    "Klasse %@" : {
+
+    },
+    "Liest das gefundene Produkt laut vor, auch wenn VoiceOver aus ist." : {
+
+    },
+    "Liste erstellen" : {
+
+    },
+    "Liste erstellen und hinzufügen" : {
+
+    },
+    "Listenname" : {
+
+    },
+    "Los geht's" : {
+
+    },
+    "Mehr" : {
+
+    },
+    "Menge" : {
+
+    },
+    "Menge für %@" : {
+
+    },
+    "Nährwerte (pro %@)" : {
+
+    },
+    "Neu aufnehmen" : {
+
+    },
+    "Neue Einkaufsliste" : {
+
+    },
+    "Neue Liste" : {
+
+    },
+    "Nimmt eine Sprachnotiz von bis zu 30 Sekunden auf" : {
+
+    },
+    "Noch keine Einkaufslisten vorhanden." : {
+
+    },
+    "Notiz" : {
+
+    },
+    "Nutri-Score" : {
+
+    },
+    "Offen" : {
+
+    },
+    "Öffnet ein Feld zur manuellen Eingabe eines Barcodes" : {
+
+    },
+    "openfoodfacts.org" : {
+
+    },
+    "Portionsgröße" : {
+
+    },
+    "Produkt" : {
+
+    },
+    "Produkt wird gesucht …" : {
+
+    },
+    "Produktinformationen von Open Food Facts." : {
+
+    },
+    "Richte die Kamera auf einen Barcode. Das Produkt wird automatisch erkannt." : {
+
+    },
+    "Scannen" : {
+
+    },
+    "Speichern" : {
+
+    },
+    "Sprachnotiz" : {
+
+    },
+    "Sprachnotiz löschen" : {
+
+    },
+    "Suchen" : {
+
+    },
+    "Titel" : {
+
+    },
+    "Über die App" : {
+
+    },
+    "Überspringen" : {
+
+    },
+    "Verarbeitungsgrad (NOVA)" : {
+
+    },
+    "Verarbeitungsgrad nach NOVA" : {
+
+    },
+    "Verlauf" : {
+
+    },
+    "Version %@" : {
+
+    },
+    "Vorhandene Liste" : {
+
+    },
+    "Vorlesen" : {
+
+    },
+    "Weiter" : {
+
+    },
+    "Wiedergabe stoppen" : {
+
+    },
+    "Zu diesem Barcode wurde kein Produkt gefunden. Du kannst einen eigenen Eintrag anlegen oder eine Sprachnotiz aufnehmen." : {
+
+    },
+    "Zur Einkaufsliste hinzufügen" : {
+
+    },
+    "Zutaten" : {
+
+    }
+  },
+  "version" : "1.0"
+}
