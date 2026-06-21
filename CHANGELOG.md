@@ -14,27 +14,18 @@ Commits](https://www.conventionalcommits.org) since the last tag. Keep the
 ## [Unreleased]
 
 ### Added
-- Shopping lists now show the quantity for each item next to the stepper.
-- Branded launch/splash screen shown while the app starts.
-
-### Changed
-- Redesigned app icon.
-- Faster and more reliable barcode scanning: near-range autofocus keeps small
-  barcodes sharp, and frames are processed synchronously for quicker reads.
-
-## [1.0.0] - 2026-06-18
-
-### Added
-- Barcode scanning with the camera (EAN, UPC, Code 128/39/93, ITF, QR, PDF417).
+- Fast, reliable barcode scanning with the camera (EAN, UPC, Code 128/39/93,
+  ITF, QR, PDF417); near-range autofocus keeps small barcodes sharp.
 - Product lookup via Open Food Facts, with manual barcode entry as a fallback.
 - Spoken product summaries and full VoiceOver support for blind and partially
   sighted users.
-- Shopping lists: create lists, add and check off items, adjust quantities.
+- Shopping lists: create lists, add and check off items, adjust quantities, and
+  see the quantity for each item next to the stepper.
 - Scan history of previously looked-up products.
 - Custom ("own") article entries that supplement online lookups.
 - Voice memos attached to products.
+- Branded launch/splash screen shown while the app starts.
 - Onboarding tutorial, settings (read-aloud, haptics) and an open-source
   licenses screen.
 
-[Unreleased]: https://github.com/oMtQB4/Marktlotse/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/oMtQB4/Marktlotse/releases/tag/v1.0.0
+[Unreleased]: https://github.com/oMtQB4/Marktlotse/compare/HEAD
