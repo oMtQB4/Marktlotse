@@ -2,15 +2,24 @@
 """Create a new Marktlotse release: bump the version and roll the changelog.
 
 Usage:
-    tools/release.py <major|minor|patch|X.Y.Z> [--tag] [--dry-run]
+    tools/release.py <auto|major|minor|patch|X.Y.Z> [--tag] [--dry-run]
 
 What it does:
   * Reads the current MARKETING_VERSION from the Xcode project.
-  * Computes the next semantic version (or uses the explicit X.Y.Z you pass).
+  * Computes the next semantic version. With `auto`, the bump is derived from the
+    Conventional Commits (https://www.conventionalcommits.org) made since the last
+    `vX.Y.Z` tag:
+        - a commit with `!` after the type/scope or a `BREAKING CHANGE:` footer
+          -> major
+        - `feat:`            -> minor
+        - `fix:` / `perf:`   -> patch
+        - everything else    -> no bump on its own
+    The highest level among the commits wins.
   * Writes the new MARKETING_VERSION to every build configuration and bumps
     CURRENT_PROJECT_VERSION (the App Store build number) by one.
   * Moves everything under the CHANGELOG "Unreleased" heading into a new dated
     "[X.Y.Z] - YYYY-MM-DD" section and leaves a fresh, empty Unreleased section.
+    If Unreleased is empty, the notes are generated from the same commits.
   * Prints the release notes for the new version (paste into App Store Connect's
     "What's New").
   * With --tag, commits the version/changelog changes and creates tag vX.Y.Z.
@@ -35,10 +44,94 @@ MARKETING_RE = re.compile(r"MARKETING_VERSION = ([^;]+);")
 BUILD_RE = re.compile(r"CURRENT_PROJECT_VERSION = ([^;]+);")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 
+# Conventional Commit subject: type(scope)!: description
+COMMIT_RE = re.compile(
+    r"^(?P<type>[a-zA-Z]+)(?:\((?P<scope>[^)]+)\))?(?P<bang>!)?:\s*(?P<desc>.+)$"
+)
+BREAKING_FOOTER_RE = re.compile(r"^BREAKING[ -]CHANGE:", re.MULTILINE)
+
+# Bump levels, ordered so max() picks the strongest.
+_LEVELS = {None: 0, "patch": 1, "minor": 2, "major": 3}
+_LEVEL_NAMES = {v: k for k, v in _LEVELS.items()}
+# How notes are grouped in the generated changelog.
+_GROUP = {"feat": "Added", "fix": "Fixed", "perf": "Changed"}
+
 
 def fail(message: str) -> "NoReturn":  # type: ignore[name-defined]
     print(f"error: {message}", file=sys.stderr)
     sys.exit(1)
+
+
+def git(*args: str) -> str:
+    """Run a git command in the repo and return stripped stdout ('' on failure)."""
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), *args],
+        capture_output=True, text=True,
+    )
+    return result.stdout.strip() if result.returncode == 0 else ""
+
+
+def last_release_tag() -> str | None:
+    """Most recent vX.Y.Z tag reachable from HEAD, or None if there are none."""
+    return git("describe", "--tags", "--match", "v[0-9]*", "--abbrev=0") or None
+
+
+def commits_since(tag: str | None) -> list[dict]:
+    """Parse the Conventional Commits between `tag` (exclusive) and HEAD."""
+    spec = f"{tag}..HEAD" if tag else "HEAD"
+    # Records separated by \x1e, fields (subject, body) by \x1f.
+    raw = git("log", spec, "--no-merges", "--format=%s%x1f%b%x1e")
+    commits = []
+    for record in raw.split("\x1e"):
+        record = record.strip("\n")
+        if not record:
+            continue
+        subject, _, body = record.partition("\x1f")
+        match = COMMIT_RE.match(subject.strip())
+        breaking = bool(BREAKING_FOOTER_RE.search(body))
+        if match:
+            commits.append({
+                "type": match["type"].lower(),
+                "scope": match["scope"],
+                "breaking": breaking or bool(match["bang"]),
+                "desc": match["desc"].strip(),
+            })
+        else:
+            # Non-conventional subject: keep it only as a possible breaking flag.
+            commits.append({
+                "type": None, "scope": None,
+                "breaking": breaking, "desc": subject.strip(),
+            })
+    return commits
+
+
+def detect_bump(commits: list[dict]) -> str | None:
+    """Strongest SemVer bump implied by the commits, or None if nothing bumps."""
+    level = 0
+    for c in commits:
+        if c["breaking"]:
+            level = max(level, _LEVELS["major"])
+        elif c["type"] == "feat":
+            level = max(level, _LEVELS["minor"])
+        elif c["type"] in ("fix", "perf"):
+            level = max(level, _LEVELS["patch"])
+    return _LEVEL_NAMES[level]
+
+
+def notes_from_commits(commits: list[dict]) -> str:
+    """Build Keep-a-Changelog notes grouped by type from conventional commits."""
+    groups: dict[str, list[str]] = {"Added": [], "Changed": [], "Fixed": []}
+    for c in commits:
+        section = _GROUP.get(c["type"] or "")
+        if not section and not c["breaking"]:
+            continue
+        section = section or "Changed"
+        scope = f"**{c['scope']}:** " if c["scope"] else ""
+        flag = " **[BREAKING]**" if c["breaking"] else ""
+        groups[section].append(f"- {scope}{c['desc']}{flag}")
+    parts = [f"### {name}\n" + "\n".join(items)
+             for name, items in groups.items() if items]
+    return "\n\n".join(parts)
 
 
 def normalize(version: str) -> tuple[int, int, int]:
@@ -79,8 +172,13 @@ def next_build(pbx: str) -> int:
     return (max(builds) + 1) if builds else 1
 
 
-def roll_changelog(text: str, version: str, date: str) -> tuple[str, str]:
-    """Return (new_changelog, notes_for_this_version)."""
+def roll_changelog(text: str, version: str, date: str,
+                   fallback_notes: str = "") -> tuple[str, str]:
+    """Return (new_changelog, notes_for_this_version).
+
+    Manually maintained Unreleased notes take precedence; if that section is
+    empty, `fallback_notes` (e.g. generated from commits) is used instead.
+    """
     marker = "## [Unreleased]"
     if marker not in text:
         fail("CHANGELOG.md has no '## [Unreleased]' section")
@@ -94,7 +192,10 @@ def roll_changelog(text: str, version: str, date: str) -> tuple[str, str]:
     body = rest[:end].strip("\n")
 
     if not body.strip():
-        fail("the Unreleased section is empty — add change notes before releasing")
+        body = fallback_notes.strip()
+    if not body.strip():
+        fail("no change notes: the Unreleased section is empty and no "
+             "feat/fix/breaking commits were found to generate them from")
 
     released = f"## [{version}] - {date}\n\n{body}"
     tail = rest[end:].lstrip("\n")
@@ -127,14 +228,30 @@ def update_link_refs(text: str, version: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Bump version and roll the changelog.")
-    parser.add_argument("bump", help="major | minor | patch | X.Y.Z")
+    parser.add_argument("bump", help="auto | major | minor | patch | X.Y.Z")
     parser.add_argument("--tag", action="store_true", help="commit and create a git tag")
     parser.add_argument("--dry-run", action="store_true", help="show changes only")
     args = parser.parse_args()
 
     pbx = PBXPROJ.read_text()
     current = read_current(pbx)
-    new = next_version(current, args.bump)
+
+    # `auto`: derive the bump (and fallback notes) from Conventional Commits.
+    auto_notes = ""
+    bump = args.bump
+    if bump == "auto":
+        tag = last_release_tag()
+        commits = commits_since(tag)
+        since = tag or "the start of history"
+        detected = detect_bump(commits)
+        if detected is None:
+            print(f"No feat/fix/breaking commits since {since}; nothing to release.")
+            return
+        print(f"Detected {detected} bump from {len(commits)} commit(s) since {since}.")
+        bump = detected
+        auto_notes = notes_from_commits(commits)
+
+    new = next_version(current, bump)
     if new <= current:
         fail(f"new version {'.'.join(map(str, new))} is not greater than "
              f"current {'.'.join(map(str, current))}")
@@ -147,7 +264,7 @@ def main() -> None:
     new_pbx = BUILD_RE.sub(f"CURRENT_PROJECT_VERSION = {build};", new_pbx)
 
     changelog = CHANGELOG.read_text()
-    new_changelog, notes = roll_changelog(changelog, version, date)
+    new_changelog, notes = roll_changelog(changelog, version, date, auto_notes)
     new_changelog = update_link_refs(new_changelog, version)
 
     print(f"Version: {'.'.join(map(str, current))} -> {version} (build {build})")

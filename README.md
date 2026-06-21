@@ -50,15 +50,30 @@ e.g. `1.0.0`). User-facing changes are tracked in [`CHANGELOG.md`](CHANGELOG.md)
 ([Keep a Changelog](https://keepachangelog.com) format): add notes under
 **Unreleased** as you work.
 
-To cut a new version, run the release tool with the part to bump (or an explicit
-version):
+To cut a new version, run the release tool. The simplest path is `auto`, which
+derives the bump from the [Conventional Commits](https://www.conventionalcommits.org)
+since the last `vX.Y.Z` tag:
 
 ```sh
+tools/release.py auto           # bump inferred from commits (see below)
 tools/release.py minor          # 1.0.0 -> 1.1.0
 tools/release.py patch          # 1.1.0 -> 1.1.1
 tools/release.py 2.0.0          # explicit version
-tools/release.py minor --dry-run    # preview without writing
+tools/release.py auto --dry-run     # preview without writing
 ```
+
+With `auto`, commit messages map to the bump as follows (highest wins):
+
+| Commit                                            | Bump  |
+| ------------------------------------------------- | ----- |
+| `feat!: …` or a `BREAKING CHANGE:` footer         | major |
+| `feat: …`                                         | minor |
+| `fix: …`, `perf: …`                               | patch |
+| `chore`, `docs`, `refactor`, `test`, `build`, …   | none  |
+
+If the **Unreleased** changelog section is empty, `auto` also generates the
+release notes from those same commits (grouped into Added / Changed / Fixed).
+Tag your releases (`--tag`) so the next `auto` run knows where to start.
 
 It bumps `MARKETING_VERSION` (the App Store version) across all build
 configurations, increments `CURRENT_PROJECT_VERSION` (the build number), moves

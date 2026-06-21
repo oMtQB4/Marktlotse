@@ -5,9 +5,11 @@ All notable changes to Marktlotse are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Create a new release with `tools/release.py <major|minor|patch>` — it moves the
-entries below from *Unreleased* into a dated, versioned section and bumps the
-app version. Keep the *Unreleased* section up to date as you work.
+Create a new release with `tools/release.py <auto|major|minor|patch>` — it moves
+the entries below from *Unreleased* into a dated, versioned section and bumps the
+app version. `auto` infers the bump from the [Conventional
+Commits](https://www.conventionalcommits.org) since the last tag. Keep the
+*Unreleased* section up to date as you work (or let `auto` generate it).
 
 ## [Unreleased]
 
