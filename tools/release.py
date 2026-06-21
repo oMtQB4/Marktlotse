@@ -236,25 +236,40 @@ def main() -> None:
     pbx = PBXPROJ.read_text()
     current = read_current(pbx)
 
-    # `auto`: derive the bump (and fallback notes) from Conventional Commits.
-    auto_notes = ""
-    bump = args.bump
-    if bump == "auto":
-        tag = last_release_tag()
-        commits = commits_since(tag)
-        since = tag or "the start of history"
-        detected = detect_bump(commits)
-        if detected is None:
-            print(f"No feat/fix/breaking commits since {since}; nothing to release.")
-            return
-        print(f"Detected {detected} bump from {len(commits)} commit(s) since {since}.")
-        bump = detected
-        auto_notes = notes_from_commits(commits)
+    # Releases are measured against the last released git tag, not the version
+    # sitting in the project (which is the *in-development* version).
+    tag = last_release_tag()
+    last_released = normalize(tag[1:]) if tag else None
 
-    new = next_version(current, bump)
-    if new <= current:
-        fail(f"new version {'.'.join(map(str, new))} is not greater than "
-             f"current {'.'.join(map(str, current))}")
+    auto_notes = ""
+
+    if last_released is None:
+        # First release ever: ship the current project version as-is (e.g. 1.0.0).
+        # A bump keyword has nothing to bump from, so it is ignored; an explicit
+        # X.Y.Z still lets you choose a different first version.
+        if SEMVER_RE.match(args.bump):
+            new = normalize(args.bump)
+        else:
+            new = current
+            print(f"First release: no prior tag — releasing the current version "
+                  f"{'.'.join(map(str, new))} as-is (bump '{args.bump}' ignored).")
+        if args.bump == "auto":
+            auto_notes = notes_from_commits(commits_since(None))
+    else:
+        bump = args.bump
+        if bump == "auto":
+            commits = commits_since(tag)
+            detected = detect_bump(commits)
+            if detected is None:
+                print(f"No feat/fix/breaking commits since {tag}; nothing to release.")
+                return
+            print(f"Detected {detected} bump from {len(commits)} commit(s) since {tag}.")
+            bump = detected
+            auto_notes = notes_from_commits(commits)
+        new = next_version(last_released, bump)
+        if new <= last_released:
+            fail(f"new version {'.'.join(map(str, new))} is not greater than the "
+                 f"last released {'.'.join(map(str, last_released))} ({tag})")
 
     version = ".".join(map(str, new))
     build = next_build(pbx)
@@ -267,7 +282,8 @@ def main() -> None:
     new_changelog, notes = roll_changelog(changelog, version, date, auto_notes)
     new_changelog = update_link_refs(new_changelog, version)
 
-    print(f"Version: {'.'.join(map(str, current))} -> {version} (build {build})")
+    baseline = ".".join(map(str, last_released)) if last_released else "(first release)"
+    print(f"Version: {baseline} -> {version} (build {build})")
     print(f"Date:    {date}")
     print("\nRelease notes (for App Store \"What's New\"):\n")
     print(notes)
