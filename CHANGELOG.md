@@ -13,6 +13,16 @@ Commits](https://www.conventionalcommits.org) since the last tag. Keep the
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-07-03
+
+### Added
+- terms of use, voice recorder improved
+
+## [1.1.0] - 2026-07-03
+
+### Added
+- terms of use, voice recorder improved
+
 ## [1.0.0] - 2026-06-21
 
 ### Added
