@@ -11,6 +11,7 @@ import SwiftUI
 struct RootView: View {
     @Environment(AppServices.self) private var services
     @State private var showTutorial = false
+    @State private var showConsent = false
     @State private var showSplash: Bool = {
         #if DEBUG
         if ScreenshotSupport.isActive { return ScreenshotSupport.holdSplash }
@@ -20,6 +21,16 @@ struct RootView: View {
 
     var body: some View {
         MainTabView()
+            .fullScreenCover(isPresented: $showConsent) {
+                ConsentView {
+                    services.settings.hasAcceptedLegalTerms = true
+                    showConsent = false
+                    // Only continue to the tutorial once consent is given.
+                    if !services.settings.hasSeenTutorial {
+                        showTutorial = true
+                    }
+                }
+            }
             .fullScreenCover(isPresented: $showTutorial) {
                 TutorialView {
                     services.settings.hasSeenTutorial = true
@@ -43,9 +54,13 @@ struct RootView: View {
                 withAnimation(.easeInOut(duration: 0.45)) {
                     showSplash = false
                 }
-                // Present the onboarding tutorial only once the splash is gone,
-                // so it never covers the startup screen on first launch.
-                if !services.settings.hasSeenTutorial {
+                // Require accepting the terms of use and privacy policy before
+                // anything else. The tutorial follows only after consent (see the
+                // consent cover's completion handler). If consent was already
+                // given, go straight to the tutorial when it hasn't been seen.
+                if !services.settings.hasAcceptedLegalTerms {
+                    showConsent = true
+                } else if !services.settings.hasSeenTutorial {
                     showTutorial = true
                 }
             }

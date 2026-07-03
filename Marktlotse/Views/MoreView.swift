@@ -22,12 +22,36 @@ struct MoreView: View {
                 }
 
                 Section {
+                    Picker("Kameralicht", selection: $settings.torchMode) {
+                        ForEach(TorchMode.allCases) { mode in
+                            Text(mode.label).tag(mode)
+                        }
+                    }
+                    .accessibilityHint("Legt fest, wann das Kameralicht beim Scannen leuchtet.")
+                } header: {
+                    Text("Kameralicht")
+                } footer: {
+                    Text("Automatisch: leuchtet bei Dunkelheit. Letzter Status: merkt sich die letzte Wahl und sagt sie beim Öffnen an. Immer an / Immer aus: fest eingestellt.")
+                }
+
+                Section {
                     Button("Einführung erneut ansehen") { showTutorial = true }
                 }
 
                 Section {
                     NavigationLink("Über die App") { AboutView() }
-                    NavigationLink("Datenschutz") { PrivacyPolicyView() }
+                    NavigationLink("Nutzungsbedingungen") { TermsOfUseView() }
+                    Link(destination: LegalDocuments.privacyPolicyURL) {
+                        HStack {
+                            Text("Datenschutz")
+                            Spacer()
+                            Image(systemName: "arrow.up.right")
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
+                        }
+                    }
+                    .accessibilityHint("Öffnet die Datenschutzerklärung im Browser.")
                     NavigationLink("Lizenzen / Open Source") { LicensesView() }
                 }
 
@@ -72,13 +96,6 @@ struct AboutView: View {
             }
             Section {
                 Text("Diese App unterstützt blinde und sehbehinderte Menschen beim selbstständigen Einkaufen. Sie erkennt Produkt-Barcodes mit der Kamera und liest die Produktinformationen vor.")
-            }
-            Section("Datenquelle") {
-                Text("Produktinformationen von Open Food Facts.")
-                Link("openfoodfacts.org", destination: URL(string: "https://world.openfoodfacts.org")!)
-                Text("Daten von Open Food Facts stehen unter der Open Database License (ODbL).")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
         }
         .navigationTitle("Über die App")

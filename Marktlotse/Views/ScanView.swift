@@ -22,6 +22,9 @@ struct ScanView: View {
     @State private var lastScanTime = Date.distantPast
     @State private var showManualEntry = false
     @State private var manualBarcode = ""
+    @State private var isTorchOn = false
+    @State private var scannerController: CameraScannerViewController?
+    @State private var didAnnounceTorch = false
 
     private var isScannerActive: Bool {
         path.isEmpty && !isProcessing && scenePhase == .active && !showManualEntry
@@ -36,6 +39,17 @@ struct ScanView: View {
             .navigationTitle("Scannen")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                if cameraStatus == .authorized {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            scannerController?.toggleTorch()
+                        } label: {
+                            Label(isTorchOn ? "Licht ausschalten" : "Licht einschalten",
+                                  systemImage: isTorchOn ? "bolt.fill" : "bolt.slash.fill")
+                        }
+                        .accessibilityHint("Schaltet das Kameralicht zum Scannen in dunkler Umgebung ein oder aus")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showManualEntry = true
@@ -65,11 +79,20 @@ struct ScanView: View {
     private var cameraLayer: some View {
         switch cameraStatus {
         case .authorized:
-            CameraScannerView(onScan: handleScan, isActive: isScannerActive)
+            CameraScannerView(
+                onScan: handleScan,
+                isActive: isScannerActive,
+                torchMode: services.settings.torchMode,
+                torchWasOn: services.settings.torchWasOn,
+                onTorchChange: { isTorchOn = $0 },
+                onUserToggle: { services.settings.torchWasOn = $0 },
+                onController: { scannerController = $0 }
+            )
                 .ignoresSafeArea(edges: .bottom)
                 .accessibilityElement()
                 .accessibilityLabel("Kamerasucher")
                 .accessibilityHint("Richte die Kamera auf einen Barcode. Das Produkt wird automatisch erkannt.")
+                .onAppear(perform: announceTorchStateIfRemembered)
         case .notDetermined:
             permissionPrompt(message: "Für das Scannen wird Zugriff auf die Kamera benötigt.",
                              button: "Kamera erlauben") {
@@ -140,6 +163,17 @@ struct ScanView: View {
         lastBarcode = barcode
         lastScanTime = now
         resolve(barcode)
+    }
+
+    /// In "remember" mode the LED comes back in its last state — point that out
+    /// once when the scanner first appears, so it's never a silent surprise.
+    private func announceTorchStateIfRemembered() {
+        guard !didAnnounceTorch,
+              cameraStatus == .authorized,
+              services.settings.torchMode == .remember else { return }
+        didAnnounceTorch = true
+        let state = services.settings.torchWasOn ? "eingeschaltet" : "ausgeschaltet"
+        services.speech.announce("Licht ist \(state)", speakAloud: services.settings.speakScanResults)
     }
 
     private func submitManualBarcode() {

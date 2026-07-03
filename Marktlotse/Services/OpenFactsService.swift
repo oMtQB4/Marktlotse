@@ -1,23 +1,56 @@
 //
-//  OpenFoodFactsService.swift
+//  OpenFactsService.swift
 //  Marktlotse
 //
-//  Product lookup using the Open Food Facts API (https://world.openfoodfacts.org).
-//  Uses the public, key-free JSON read API (v2). German product names are
-//  preferred when available.
+//  Product lookup using the Open Food Facts API family. Open Food Facts and its
+//  sibling projects (Open Products Facts, Open Beauty Facts, Open Pet Food Facts)
+//  share the exact same public, key-free JSON read API (v2) and schema — they
+//  only differ by host. One configurable service therefore covers all of them.
+//  German product names are preferred when available.
 //
 
 import Foundation
 
-final class OpenFoodFactsService: ProductLookupService {
+final class OpenFactsService: ProductLookupService {
 
     private let session: URLSession
-    private let host = "https://world.openfoodfacts.org"
-    // Open Food Facts asks for a descriptive User-Agent.
+    private let host: String
+    private let source: ArticleSource
+    // The Open Facts servers ask for a descriptive User-Agent.
     private let userAgent = "Marktlotse/1.0 (iOS; de.apps-roters.marktlotse)"
 
-    init(session: URLSession = .shared) {
+    init(session: URLSession = .shared,
+         host: String = "https://world.openfoodfacts.org",
+         source: ArticleSource = .openFoodFacts) {
         self.session = session
+        self.host = host
+        self.source = source
+    }
+
+    // MARK: - Open Facts family
+
+    /// Food & drink — the richest database (nutrition, ingredients, allergens).
+    static func foodFacts(session: URLSession = .shared) -> OpenFactsService {
+        OpenFactsService(session: session,
+                         host: "https://world.openfoodfacts.org", source: .openFoodFacts)
+    }
+
+    /// General, non-food products (household etc.).
+    static func productsFacts(session: URLSession = .shared) -> OpenFactsService {
+        OpenFactsService(session: session,
+                         host: "https://world.openproductsfacts.org", source: .openProductsFacts)
+    }
+
+    /// Cosmetics / drugstore items.
+    static func beautyFacts(session: URLSession = .shared) -> OpenFactsService {
+        OpenFactsService(session: session,
+                         host: "https://world.openbeautyfacts.org", source: .openBeautyFacts)
+    }
+
+    /// Pet food.
+    static func petFoodFacts(session: URLSession = .shared) -> OpenFactsService {
+        OpenFactsService(session: session,
+                         host: "https://world.openpetfoodfacts.org", source: .openPetFoodFacts)
     }
 
     /// Opens the TLS connection to the API ahead of the first lookup so that
@@ -91,7 +124,7 @@ final class OpenFoodFactsService: ProductLookupService {
             detailName: firstNonEmpty(product.genericNameDE, product.genericName),
             descriptionText: nil,
             category: lastCategory(product.categories),
-            source: .openFoodFacts,
+            source: source,
             quantity: cleaned(product.quantity),
             servingSize: cleaned(product.servingSize),
             ingredients: firstNonEmpty(product.ingredientsTextDE, product.ingredientsText),

@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "1.3.0",
+	"bspVersion": "2.2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/jan/src/_private/Marktlotse/Marktlotse.xcworkspace",
+	"build_root": "/Users/jan/Library/Developer/Xcode/DerivedData/Marktlotse-hakjvlmhflzvqacpawsckvurngqg",
+	"scheme": "Marktlotse",
+	"kind": "xcode"
+}

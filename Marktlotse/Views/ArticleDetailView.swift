@@ -97,6 +97,9 @@ struct ArticleDetailView: View {
         switch article.source {
         case .openGTIN: return "OpenGTINDB"
         case .openFoodFacts: return "Open Food Facts"
+        case .openProductsFacts: return "Open Products Facts"
+        case .openBeautyFacts: return "Open Beauty Facts"
+        case .openPetFoodFacts: return "Open Pet Food Facts"
         case .customEntry: return "Eigener Eintrag"
         case .voiceMemoOnly: return "Nur Sprachnotiz"
         case .unknown: return "Unbekannt"

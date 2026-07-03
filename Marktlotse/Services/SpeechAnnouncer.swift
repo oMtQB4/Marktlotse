@@ -15,8 +15,26 @@ final class SpeechAnnouncer {
 
     private let synthesizer = AVSpeechSynthesizer()
 
+    /// While true, no announcement or speech is emitted. Set during voice-memo
+    /// recording so the app's own output doesn't bleed into the memo. Note: this
+    /// only silences *our* output — the system VoiceOver cannot be paused by an
+    /// app and is instead kept out of the recording by echo cancellation.
+    private var isRecordingSuppressed = false
+
+    /// Silence all output and stop any in-progress utterance for a recording.
+    func beginRecordingSuppression() {
+        isRecordingSuppressed = true
+        synthesizer.stopSpeaking(at: .immediate)
+    }
+
+    /// Resume normal output after a recording ends.
+    func endRecordingSuppression() {
+        isRecordingSuppressed = false
+    }
+
     /// Announce a message. `force` speaks aloud even if VoiceOver is off.
     func announce(_ message: String, speakAloud: Bool) {
+        guard !isRecordingSuppressed else { return }
         if UIAccessibility.isVoiceOverRunning {
             // Let VoiceOver read it; avoids double speech.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

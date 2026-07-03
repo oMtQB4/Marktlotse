@@ -43,9 +43,9 @@ struct LicensesView: View {
             }
 
             Section("Datenquellen") {
-                Text("Produktinformationen von Open Food Facts.")
+                Text("Produktinformationen von Open Food Facts und seinen Schwester-Datenbanken (Open Products Facts, Open Beauty Facts, Open Pet Food Facts).")
                 Link("openfoodfacts.org", destination: URL(string: "https://world.openfoodfacts.org")!)
-                Text("Daten von Open Food Facts stehen unter der Open Database License (ODbL) 1.0.")
+                Text("Die Daten stehen unter der Open Database License (ODbL) 1.0.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 Link("ODbL 1.0", destination: URL(string: "https://opendatacommons.org/licenses/odbl/1-0/")!)

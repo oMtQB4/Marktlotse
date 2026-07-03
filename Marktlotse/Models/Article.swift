@@ -12,6 +12,9 @@ import Foundation
 enum ArticleSource: String, Codable {
     case openGTIN
     case openFoodFacts
+    case openProductsFacts
+    case openBeautyFacts
+    case openPetFoodFacts
     case customEntry
     case voiceMemoOnly
     case unknown
@@ -60,7 +63,8 @@ struct Article: Identifiable, Hashable {
     /// Whether any meaningful product information was found.
     var isResolved: Bool {
         switch source {
-        case .openGTIN, .openFoodFacts, .customEntry:
+        case .openGTIN, .openFoodFacts, .openProductsFacts, .openBeautyFacts,
+             .openPetFoodFacts, .customEntry:
             return !(title?.isEmpty ?? true)
         case .voiceMemoOnly, .unknown:
             return false
