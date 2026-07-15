@@ -13,6 +13,11 @@ Commits](https://www.conventionalcommits.org) since the last tag. Keep the
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-15
+
+### Added
+- ConsentView, added QR-Codes and just read the content (if not an url)
+
 ## [1.1.0] - 2026-07-03
 
 ### Added
