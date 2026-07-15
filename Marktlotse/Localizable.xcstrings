@@ -1,16 +1,6 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
-    "%@\n%@\nE-Mail: %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@\n%2$@\nE-Mail: %3$@"
-          }
-        }
-      }
-    },
     "%lld" : {
 
     },
@@ -33,9 +23,6 @@
     "%lld×" : {
 
     },
-    "•" : {
-
-    },
     "Abbrechen" : {
 
     },
@@ -46,6 +33,9 @@
 
     },
     "Allergene" : {
+
+    },
+    "Änderungen" : {
 
     },
     "Artikel hinzufügen" : {
@@ -78,25 +68,16 @@
     "Beendet die laufende Aufnahme" : {
 
     },
-    "Beim Start der App wird die Verbindung zu Open Food Facts bereits vorbereitet, um spätere Suchen zu beschleunigen. Dabei wird noch kein Barcode übertragen." : {
+    "Beschreibung" : {
 
     },
-    "Beschreibung" : {
+    "Bevor es losgeht, lesen Sie bitte die Nutzungsbedingungen und die Datenschutzerklärung. Um die App zu verwenden, müssen Sie beiden zustimmen." : {
 
     },
     "Bewertung" : {
 
     },
     "Bezeichnung" : {
-
-    },
-    "Da persönliche Inhalte nur lokal gespeichert werden, haben Sie die volle Kontrolle darüber. Nach der DSGVO haben Sie das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit." : {
-
-    },
-    "Dabei werden übertragen: der Produkt-Barcode (EAN/GTIN), eine Programmkennung (User-Agent Marktlotse) sowie technisch notwendige Verbindungsdaten wie Ihre IP-Adresse, die der Server zur Beantwortung der Anfrage benötigt." : {
-
-    },
-    "Daten auf Ihrem Gerät" : {
 
     },
     "Datenquellen" : {
@@ -108,25 +89,28 @@
     "Der Quellcode wird mit dem ersten Release öffentlich verfügbar gemacht." : {
 
     },
+    "Die angezeigten Produktinformationen stammen aus offenen Fremddatenbanken wie Open Food Facts sowie aus selbst angelegten Einträgen. Diese Daten werden von Dritten gepflegt und können unvollständig, veraltet oder falsch sein." : {
+
+    },
+    "Die App wird mit größtmöglicher Sorgfalt bereitgestellt, jedoch ohne Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der angezeigten Informationen." : {
+
+    },
     "Die Barcode-Erkennung verwendet Google ML Kit. Die Nutzung unterliegt zusätzlich zu den genannten Open-Source-Lizenzen den ML-Kit-Nutzungsbedingungen von Google." : {
 
     },
     "Die Daten stehen unter der Open Database License (ODbL) 1.0." : {
 
     },
-    "Die Verarbeitung bei der Produktsuche erfolgt auf Ihre Veranlassung zur Bereitstellung der von Ihnen angeforderten Funktion (Art. 6 Abs. 1 lit. b und f DSGVO)." : {
-
-    },
     "Diese App unterstützt blinde und sehbehinderte Menschen beim selbstständigen Einkaufen. Sie erkennt Produkt-Barcodes mit der Kamera und liest die Produktinformationen vor." : {
 
     },
-    "Diese Daten verlassen Ihr Gerät nicht. Sie können sie jederzeit in der App oder durch Deinstallation der App löschen." : {
-
-    },
-    "Diese Datenschutzerklärung kann angepasst werden, wenn sich die App ändert. Es gilt die jeweils in der App angezeigte Fassung." : {
-
-    },
     "Diese Liste ist leer." : {
+
+    },
+    "Diese Nutzungsbedingungen können angepasst werden, wenn sich die App ändert. Es gilt die jeweils in der App angezeigte Fassung." : {
+
+    },
+    "Diese Nutzungsbedingungen regeln die Verwendung der App Marktlotse. Mit der Nutzung der App erklären Sie sich mit diesen Bedingungen einverstanden." : {
 
     },
     "Doppeltippen, um den Status zu ändern" : {
@@ -165,12 +149,6 @@
     "Erstellen" : {
 
     },
-    "Es werden keine Namen, Benutzerkonten, Geräte-Kennungen oder Standortdaten übermittelt." : {
-
-    },
-    "Folgende Inhalte werden ausschließlich lokal auf Ihrem Gerät gespeichert und nicht übertragen:" : {
-
-    },
     "Fügt %@ zu %@ hinzu" : {
       "localizations" : {
         "de" : {
@@ -180,6 +158,12 @@
           }
         }
       }
+    },
+    "Für die Produktsuche wird eine Internetverbindung benötigt. Auf dessen Verfügbarkeit und auf die Verfügbarkeit der abzurufenden Internetservices haben wir keinen Einfluss. Es besteht kein Anspruch auf eine ununterbrochene Verfügbarkeit der App oder einzelner Funktionen." : {
+
+    },
+    "Für Schäden, die aus der Nutzung oder Nichtverfügbarkeit der App entstehen, wird nur bei Vorsatz oder grober Fahrlässigkeit gehaftet. Die Haftung nach zwingenden gesetzlichen Vorschriften, etwa bei Verletzung von Leben, Körper oder Gesundheit, bleibt unberührt." : {
+
     },
     "Gescannte Produkte erscheinen hier." : {
 
@@ -197,6 +181,9 @@
         }
       }
     },
+    "Haftung" : {
+
+    },
     "Haptisches Feedback" : {
 
     },
@@ -209,15 +196,6 @@
     "Hinzufügen" : {
 
     },
-    "Ihre Rechte" : {
-
-    },
-    "Kamera und Mikrofon" : {
-
-    },
-    "Kamera: Wird zum Scannen von Barcodes benötigt. Die Barcode-Erkennung läuft vollständig auf dem Gerät (Google ML Kit). Es werden keine Bilder gespeichert oder übertragen." : {
-
-    },
     "Kameralicht" : {
 
     },
@@ -225,9 +203,6 @@
 
     },
     "Kategorie" : {
-
-    },
-    "Kein Tracking, keine Werbung, kein Konto" : {
 
     },
     "Kein Treffer" : {
@@ -278,10 +253,10 @@
     "Marktlotse" : {
 
     },
-    "Marktlotse hilft beim selbstständigen Einkaufen. Die App ist auf Datensparsamkeit ausgelegt: Wir betreiben keine eigenen Server und übertragen keine Daten an uns. Persönliche Inhalte bleiben auf Ihrem Gerät." : {
+    "Marktlotse nutzt die folgenden Open-Source-Komponenten. Die jeweiligen Lizenztexte sind unten vollständig wiedergegeben." : {
 
     },
-    "Marktlotse nutzt die folgenden Open-Source-Komponenten. Die jeweiligen Lizenztexte sind unten vollständig wiedergegeben." : {
+    "Marktlotse unterstützt blinde und sehbehinderte Menschen beim selbstständigen Einkaufen. Die App erkennt Produkt-Barcodes mit der Kamera und liest Produktinformationen vor. Sie ist eine Hilfe und ersetzt weder eine ärztliche Beratung noch die eigenverantwortliche Prüfung von Produkten." : {
 
     },
     "Mehr" : {
@@ -293,7 +268,7 @@
     "Menge für %@" : {
 
     },
-    "Mikrofon: Wird ausschließlich für selbst aufgenommene Sprachnotizen verwendet. Die Aufnahmen bleiben lokal auf dem Gerät." : {
+    "Mit „Zustimmen und fortfahren“ akzeptieren Sie die Nutzungsbedingungen und die Datenschutzerklärung." : {
 
     },
     "ML Kit Terms" : {
@@ -323,16 +298,28 @@
     "Nutri-Score" : {
 
     },
+    "Nutzen Sie die App nicht in Situationen, in denen Ihre Aufmerksamkeit an anderer Stelle erforderlich ist, etwa im Straßenverkehr. Verwenden Sie die App nur im Rahmen der geltenden Gesetze." : {
+
+    },
+    "Nutzungsbedingungen" : {
+
+    },
     "ODbL 1.0" : {
 
     },
     "Offen" : {
 
     },
-    "Öffnet ein Feld zur manuellen Eingabe eines Barcodes" : {
+    "Öffnet den vollständigen Text im Browser." : {
 
     },
-    "Open Food Facts und seine Schwester-Datenbanken sind gemeinnützige, offene Projekte. Für die dortige Verarbeitung gelten deren Datenschutzbestimmungen." : {
+    "Öffnet den vollständigen Text." : {
+
+    },
+    "Öffnet die Datenschutzerklärung im Browser." : {
+
+    },
+    "Öffnet ein Feld zur manuellen Eingabe eines Barcodes" : {
 
     },
     "openfoodfacts.org" : {
@@ -347,19 +334,16 @@
     "Produkt wird gesucht …" : {
 
     },
-    "Produktinformationen von Open Food Facts und seinen Schwester-Datenbanken (Open Products Facts, Open Beauty Facts, Open Pet Food Facts)." : {
+    "Produktinformationen ohne Gewähr" : {
 
     },
-    "Produktsuche über Open Food Facts" : {
+    "Produktinformationen von Open Food Facts und seinen Schwester-Datenbanken (Open Products Facts, Open Beauty Facts, Open Pet Food Facts)." : {
 
     },
     "Projekt auf GitHub" : {
 
     },
     "Quellcode" : {
-
-    },
-    "Rechtsgrundlage" : {
 
     },
     "Richte die Kamera auf einen Barcode. Das Produkt wird automatisch erkannt." : {
@@ -369,12 +353,6 @@
 
     },
     "Schaltet das Kameralicht zum Scannen in dunkler Umgebung ein oder aus" : {
-
-    },
-    "Sie können diese Berechtigungen jederzeit in den Einstellungen Ihres Geräts widerrufen." : {
-
-    },
-    "Sie können Verlauf, Listen, eigene Einträge und Sprachnotizen jederzeit in der App entfernen. Durch Deinstallation der App werden alle lokal gespeicherten Daten gelöscht." : {
 
     },
     "Softwarebibliotheken" : {
@@ -389,10 +367,7 @@
     "Sprachnotiz löschen" : {
 
     },
-    "Stand und Änderungen" : {
-
-    },
-    "Stand: Juni 2026" : {
+    "Stand: Juli 2026" : {
 
     },
     "Suchen" : {
@@ -407,16 +382,19 @@
     "Überspringen" : {
 
     },
-    "Verantwortlich" : {
-
-    },
-    "Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO):" : {
+    "Verantwortungsvolle Nutzung" : {
 
     },
     "Verarbeitungsgrad (NOVA)" : {
 
     },
     "Verarbeitungsgrad nach NOVA" : {
+
+    },
+    "Verfügbarkeit" : {
+
+    },
+    "Verlassen Sie sich bei wichtigen Entscheidungen – insbesondere bei Allergien, Unverträglichkeiten, Medikamenten oder Ernährungsvorgaben – nicht allein auf die App. Prüfen Sie im Zweifel die Angaben auf der Produktverpackung oder holen Sie sich Unterstützung." : {
 
     },
     "Verlauf" : {
@@ -440,22 +418,28 @@
     "Weiter" : {
 
     },
+    "Wie mit Ihren Daten umgegangen wird, ist in der Datenschutzerklärung beschrieben. Sie finden diese jederzeit im Bereich „Mehr“." : {
+
+    },
     "Wiedergabe stoppen" : {
 
     },
-    "Wir betreiben keine eigenen Server und speichern keine Ihrer Daten bei uns. Es findet keine Analyse oder Nachverfolgung Ihres Verhaltens statt, es wird keine Werbung angezeigt, und es ist kein Benutzerkonto erforderlich. Außer der oben beschriebenen Produktsuche bei Open Food Facts und seinen Schwester-Datenbanken werden keine Daten an Dritte weitergegeben." : {
+    "Willkommen bei Marktlotse" : {
 
     },
     "Zu diesem Barcode wurde kein Produkt gefunden. Du kannst einen eigenen Eintrag anlegen oder eine Sprachnotiz aufnehmen." : {
 
     },
-    "Zum Abrufen von Produktinformationen wird der gescannte oder manuell eingegebene Barcode über eine verschlüsselte Verbindung (HTTPS) an das offene Projekt Open Food Facts und seine Schwester-Datenbanken Open Products Facts, Open Beauty Facts und Open Pet Food Facts (world.openfoodfacts.org, world.openproductsfacts.org, world.openbeautyfacts.org, world.openpetfoodfacts.org) gesendet. Dies ist die einzige Datenübermittlung an Dritte." : {
-
-    },
     "Zur Einkaufsliste hinzufügen" : {
 
     },
+    "Zustimmen und fortfahren" : {
+
+    },
     "Zutaten" : {
+
+    },
+    "Zweck der App" : {
 
     }
   },

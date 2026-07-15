@@ -79,17 +79,20 @@ struct Article: Identifiable, Hashable {
 
     /// A short spoken summary suitable for a VoiceOver announcement.
     var spokenSummary: String {
-        var parts: [String] = []
         if isResolved {
-            parts.append(displayTitle)
+            var parts = [displayTitle]
             if let manufacturer, !manufacturer.isEmpty {
                 parts.append("von \(manufacturer)")
             }
-        } else {
-            parts.append("Kein Produkt gefunden")
-            parts.append("Barcode \(spokenBarcode)")
+            return parts.joined(separator: ", ")
         }
-        return parts.joined(separator: ", ")
+        // Unresolved: a plain numeric retail barcode read out digit by digit is
+        // just noise, so we stay terse. When the code carries letters it is a
+        // text barcode whose content is meant to be read, so we simply speak it.
+        if barcode.contains(where: { $0.isLetter }) {
+            return barcode
+        }
+        return "Kein Produkt gefunden"
     }
 
     /// Barcode read out digit by digit for clarity.

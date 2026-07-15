@@ -97,12 +97,13 @@ final class CameraScannerViewController: UIViewController, BarcodeScannerSource 
     /// Formats that carry a check digit we can verify to reject misreads early.
     private let checksummedFormats: BarcodeFormat = [.EAN13, .EAN8]
 
-    /// Google ML Kit barcode scanner. Restricted to EAN-8 and EAN-13 — the only
-    /// formats this app needs (the European retail barcodes on groceries). The
-    /// fewer formats ML Kit considers, the less work it does per frame, so
-    /// detection is as fast as possible; re-add formats here if a need comes up.
+    /// Google ML Kit barcode scanner. Restricted to the European retail
+    /// barcodes on groceries (EAN-8 / EAN-13) plus QR codes, whose text is read
+    /// aloud when it isn't a link. The fewer formats ML Kit considers, the less
+    /// work it does per frame, so detection stays fast; re-add formats here if a
+    /// need comes up.
     private lazy var barcodeScanner: BarcodeScanner = {
-        let options = BarcodeScannerOptions(formats: [.EAN8, .EAN13])
+        let options = BarcodeScannerOptions(formats: [.EAN8, .EAN13, .qrCode])
         return BarcodeScanner.barcodeScanner(options: options)
     }()
 
@@ -386,6 +387,13 @@ extension CameraScannerViewController: AVCaptureVideoDataOutputSampleBufferDeleg
               let value = barcode.rawValue
         else { return }
 
+        // Ignore link QR codes entirely — web URLs and app deep links alike.
+        // They carry no product info this app can use, and reading a raw link
+        // aloud is only noise. ML Kit flags web URLs via `valueType`; custom
+        // deep-link schemes (myapp://, tel:, mailto:, …) come through as plain
+        // text, so we also match any URI scheme ourselves.
+        if barcode.valueType == .URL || isLink(value) { return }
+
         // Reject EAN/UPC reads whose check digit doesn't add up — these are
         // almost always misreads from a blurry frame.
         if checksummedFormats.contains(barcode.format), !Barcode.hasValidCheckDigit(value) {
@@ -405,6 +413,15 @@ extension CameraScannerViewController: AVCaptureVideoDataOutputSampleBufferDeleg
         pendingCount = 0
 
         DispatchQueue.main.async { self.onScan?(value) }
+    }
+
+    /// Whether a scanned payload is a link — a web URL or an app deep link.
+    /// Matches a URI scheme followed by `://` (e.g. `https://`, `myapp://`),
+    /// which covers both. Requiring the `//` keeps ordinary text that merely
+    /// contains a colon (`Notiz: Milch`) from matching.
+    private func isLink(_ value: String) -> Bool {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.range(of: #"^[a-zA-Z][a-zA-Z0-9+.\-]*://"#, options: .regularExpression) != nil
     }
 
     /// Maps the (portrait-locked) back camera feed to the correct image orientation.
